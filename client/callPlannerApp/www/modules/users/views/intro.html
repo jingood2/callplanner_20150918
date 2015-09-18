@@ -1,0 +1,25 @@
+ <ion-view view-title="intro" ng-controller="IntroCtrl">
+    <ion-content style="background-image: url(img/sb1.jpg); background-size: cover;">
+     <div class="hero no-header flat">
+            <div class="content">
+                <h1> Call Planner</h1>
+                <p> Plan your conference </p>
+            </div>
+      </div>
+
+      <button class="button button-block ion-social-google button-assertive-900">Google+</button>
+      <button class="button button-block ion-social-facebook button-positive-900">Facebook</button>
+
+      <div class="button-bar">
+        <button class="button button-light button-clear" ng-click="showModal(1)">로그인</button>
+        <button class="button button-light button-clear" ng-click="showModal(2)">회원가입</button>
+      </div>
+      <!--
+      <div class="button-bar social-login">
+      </div>
+      <div class="button-bar social-login">
+        <button class="button icon-left ion-social-facebook button-positive-900">Facebook</button>
+      </div>
+      -->
+    </ion-content>
+ </ion-view>

@@ -1,0 +1,52 @@
+<ion-view hide-back-button="true" view-title="Contacts">
+  <ion-nav-buttons side="left">
+    <button class="button-clear" ng-click="goBack()">
+      <a class="button ion-chevron-left button-clear button-white"></a>
+    </button>
+  </ion-nav-buttons>
+  <ion-nav-buttons side="right">
+    <button class="button-clear" ng-click="submit()">
+      <a class="button ion-checkmark button-clear button-white"></a>
+    </button>
+  </ion-nav-buttons>
+
+  <ion-content>
+    <div class="bar bar-header item-input-inset">
+      <ion-search placeholder="Search" filter="search"></ion-search>
+    </div>
+    <ion-scroll zooming="false" direction="y" style="height: 400px">
+      <div class="ion-list" >
+       
+        <div class="ion-item">
+          <ion-checkbox ng-repeat="contact in contactPrefilter(contacts) | filter:search.value" ng-model="contact.checked" ng-checked="contact.checked" class="item">
+                <h2>{{contact.name}}</h2>
+                <p>{{contact.tel}}</p>
+          </ion-checkbox>
+        </div>
+      </div>
+    </ion-scroll>
+<!--   <div>
+          <button class="button " ng-click="add()">Call Now</button>
+        </div> -->
+    <div class="ion-pane" style="{height: 100px;}">
+      <div class="item item-button-right">
+       
+          <span class="label">Add By Number</span>
+       
+          <button class="button button-clear button-positive icon ion-ios-list" ng-click="showManualInputPopup()">  
+          </button>
+       
+          <div class="ion-item item-stable item-clear" style="margin: 4px;">    
+            <button ng-model="contactList" class="ion-button ion-button-outline" ng-repeat="contact in numberPrefilter(contacts) " style="margin: 3px; border-width: 2px; background-color: #ffffff; border-radius: 10px; border-color:gray; border-style:dotted;" ng-click="removeNumber(contact.tel)" >
+                {{contact.name}}
+            </button>
+          </div>
+          <!-- <div class="spacer" style="height: 20px;"></div> -->
+        </div>
+    </div>
+  </ion-content>
+
+</ion-view>
+
+
+    

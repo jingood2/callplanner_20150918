@@ -1,0 +1,45 @@
+<ion-view view-title="Settings">
+  <ion-nav-buttons side="left">
+    <button class="button-clear" ng-click="$ionicGoBack()">
+      <a class="button ion-chevron-left button-clear button-white"></a>
+    </button>
+  </ion-nav-buttons>
+   <ion-nav-buttons side="right">
+    <button class="button-clear" ng-click="submit()">
+      <a class="button ion-checkmark button-clear button-white"></a>
+    </button>
+  </ion-nav-buttons>
+  <ion-content>
+    <ion-list>
+    	
+    	<ion-item>
+    		<span class="input-label">Alias</span>
+	    	<label class="item item-input">
+			    <input ng-model="setting_obj.alias" type="text" placeholder="Input your alias">
+		  	</label>
+		</ion-item>
+    	<ion-item>
+    		<span class="input-label">Exchange Account</span>
+	    	<label class="item item-input">
+			    <input ng-model="setting_obj.emailAddress" type="text" placeholder="Email address">
+		  	</label>
+		  	<label class="item item-input">
+			    <input ng-model="setting_obj.emailPassword" type="password" placeholder="Password">
+		  	</label>
+<!-- 		  	<button id="validateAcc" class="button button-block button-calm" ng-click="validateAccount()">
+  				{{validating}}
+			</button> -->
+    	</ion-item>
+
+		<ion-toggle ng-model="setting_obj.syncExchange">
+		        Sync with Exchange
+		</ion-toggle>
+
+
+	<!-- 	<ion-toggle ng-model="settings.reserved">
+		        Reserved
+		</ion-toggle> -->
+	
+    </ion-list>
+  </ion-content>
+</ion-view>

@@ -1,0 +1,24 @@
+<ion-view view-title="Call Planner">
+  <ion-nav-buttons side="left">
+    <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+      {{username}}
+    </button>
+  </ion-nav-buttons>
+  <ion-content style="background-image: url(img/sb1.jpg); background-size: cover;">
+    <div class="list card">
+      <div class="item clear-bg item-bg-image "  ng-click="goContacts()">
+        <img src="img/home_card1.jpg">
+        <h2>RIGHT NOW!</h2>
+        <p>conference right now</p>
+      </div>
+    </div>
+    <div class="list card">
+      <div class="item clear-bg item-bg-image "  ng-click="goCreatePlan()">
+        <img src="img/home_card2.jpg">
+        <h2>SCHEDULE PLAN</h2>
+        <p>schedule your conference</p>
+      </div>
+    </div>
+
+  </ion-content>
+</ion-view>

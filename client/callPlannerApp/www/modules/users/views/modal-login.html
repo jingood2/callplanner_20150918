@@ -1,0 +1,23 @@
+<ion-modal-view view-title="Log in" ng-controller="LoginCtrl">
+  <ion-header-bar class="bar-dark">
+    <h1 class="title">Log in</h1>
+    <div class="buttons">
+      <button class="button button-clear ion-android-arrow-back button-left" ng-click="closeModal(1)"></button>
+    </div>
+  </ion-header-bar>
+  <ion-content padding="true" scroll="false" style="background-image: url(img/sb1.jpg); background-size: cover;">
+    <form ng-submit="login()">
+      <ion-list>
+        <label class="item item-input">
+          <input style="color: #fff; text-shadow: 0 1px 0px #000;" type="email" placeholder="user@domain.com" ng-model="credentials.email">
+        </label>
+        <label class="item item-input">
+          <input style="color: #fff; text-shadow: 0 1px 0px #000;" type="password" placeholder="password" ng-model="credentials.password">
+        </label>
+      </ion-list>
+      <div class="spacer" style="width: 300px; height: 32px;"></div>
+      <button class="button button-positive button-block ">Login</button>
+    </form>
+    <button class="button button-positive button-clear button-block" ng-click="showModal(2)">Or create an account</button>
+  </ion-content>
+</ion-modal-view>

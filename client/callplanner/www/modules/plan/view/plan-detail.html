@@ -1,0 +1,187 @@
+<ion-view view-title="Plan Detail">
+
+  <ion-nav-buttons side="left">
+    <button class="button-clear" ng-click="goBack()">
+      <a class="button ion-chevron-left button-clear button-white"></a>
+    </button>
+  </ion-nav-buttons>
+  <ion-nav-buttons side="right">
+    <button class="button-clear" ng-click="submit()">
+      <a class="button ion-checkmark button-clear button-white"></a>
+    </button>
+  </ion-nav-buttons>
+
+  <ion-content ng-init="init()" ng-model="plan" >
+    <div ng-switch on="plan.plan.callState">
+      <div ng-switch-when="Disconnected">
+        <ion-list >
+      
+          <div class="item item-button-right">
+            <span class="label">Attendants</span>
+         
+            <button class="button button-clear button-positive icon ion-ios-list" ui-sref="contacts">  
+            </button>
+         
+            <!-- <div class="spacer" style="height: 20px;"></div> -->
+          </div>
+          <div class="item-stable item-clear" style="margin: 4px;">    
+            <button ng-model="contactList" class="ion-button ion-button-outline" ng-repeat="contact in prefilter(contactList) " style="margin: 3px; border-width: 2px; background-color: #ffffff; border-radius: 10px; border-color:gray; border-style:dotted;" ng-click="removeNumber(contact.tel)" >
+                {{contact.name == '' ? contact.tel : contact.name}}
+            </button>
+          </div>
+
+          <label ng-if="repeat=='now'" class="item item-input item-stacked-label">
+            <span class="icon ion-clock"></span>
+            <span class="input-label">Date</span>
+            <button class="button button-clear">
+              <h2>Now</h2>
+            </button>
+          </label>
+          <label ng-if="repeat!='now'" class="item item-input item-stacked-label">
+            <span class="icon ion-clock"></span>
+            <span class="input-label">From</span>
+            <!-- <input type="datetime-local" ng-model="plan.scheduledAt" required> -->
+            <input type="datetime-local" ng-model="plan.plan.scheduledAt" placeholder="yyyy-MM-ddTHH:mm:ss" required>
+          </label>    
+          <label ng-if="repeat!='now'" class="item item-input item-stacked-label">
+            <span class="icon ion-clock"></span>
+            <span class="input-label">To</span>
+            <input type="datetime-local" ng-model="plan.plan.scheduledTo" placeholder="yyyy-MM-ddTHH:mm:ss" required>
+          </label>
+
+          <ion-item class="item-stable"
+                    ng-click="toggleGroup(group)"
+                    ng-class="{active: isGroupShown(group)}">
+              <i class="icon" ng-class="isGroupShown(group) ? 'ion-minus' : 'ion-plus'"></i>
+            Advanced Options
+          </ion-item>
+          <ion-list class="item-accordion "
+                    ng-show="isGroupShown(group)">
+            <label class="item item-input item-stacked-label" >
+              <h2>Title </h2>
+              <input type="text" ng-model="plan.plan.title" placeholder="Conference call">
+            </label>
+            
+            <label class="item item-input item-select">
+              <div class="input-label">
+                Repeat type
+              </div>
+              <select ng-model="plan.plan.repeat">
+                <option id="once" >once</option>
+                <option id="daily">daily</option>
+                <option id="weekly">weekly</option>
+                <option id="monthly">monthly</option>
+              </select>
+            </label>
+
+            <div class="item item-button-right">
+              <h2>Announce</h2>
+              <button class="button button-positive">
+              <i class="icon ion-ios-mic"></i>
+              </button>
+            </div>
+
+            <ion-toggle ng-model="plan.plan.record">
+                  Recording
+            </ion-toggle>
+            
+
+
+            <div ng-switch on="isAttendee">
+              <div ng-switch-when="true">
+                <label class="item item-input item-select" >
+                  <div class="input-label">
+                    How to join
+                  </div>
+                  <select>
+                    <option selected>Receiving call</option>
+                    <option>Sending call</option>
+                  </select>
+                </label>
+              </div>
+            </div> 
+          </ion-list>
+        </ion-list>
+      </div>
+
+      <div ng-switch-default>
+        <ion-list>
+          <div class="item item-wrap" style="{margin: 50px;}">
+            <div class="row">
+              <div class="col">
+                <span style="{text-align: right;}">Start Time</span>
+              </div>
+              <div class="col" >
+                <span style="{text-align: right;}"> 2015-07-11 12:00:11 </span>
+              </div>
+            </div>
+          </div>
+          <div class="item item-wrap" style="{margin: 50px;}">
+            <div class="row">
+              <div class="col" >
+                <span>Elapsed Time</span>
+              </div>
+              <div class="col" >
+                <span> 00:00:11 </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="item item-wrap" style="{margin: 50px;}">
+            <div class="row">
+              <div class="col" style="{width: 100%;}">
+                <span>Participants</span>
+              </div>
+            </div>
+            <div class="spacer" style="height: 10px;"></div>
+            <div class="row" ng-repeat="attendant in plan.plan.attendees">
+              <div class="col col-50"></div>
+              <div class="col col-40">
+                <span>{{attendant.name}}</span>
+              </div>
+              <div class="col col-10">
+                <div ng-switch on="attendant.connected">
+                  <div ng-switch-when="present">
+                    <ion-icon class="icon ion-ios-circle-filled custom-circle-green-icon"></ion-icon>
+                  </div>
+                  <div ng-switch-default>
+                    <ion-icon class="icon ion-ios-circle-filled custom-circle-grey-icon"></ion-icon>
+                  </div>
+                <!-- <img ng-src="{{getImgUrlFromStastus(attendant.status)}}"> -->
+                <!-- <span></span> -->
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row row-center">
+            <div ng-switch on="myCallStatus()">
+              <div ng-switch-when="absent">
+                <div class="col col-center">
+                  <!-- <button class="button button-balanced" ng-click="joinNow()">
+                    Join Now
+                  </button>           -->
+                  <a class="button button-balanced icon-left ion-android-telephone"  ng-click="joinNow(plan.plan.conferenceNum)">Join Now</a>
+                </div>
+              </div>
+              <div ng-switch-when="present">
+                <div class="col">
+                  <!-- <button ng-model="muteStatus"class="button button-dark" ng-click="changeMuteStatus()"> -->
+                  <a class="button button-dark" ng-model="muteStatus" ng-click="changeMuteStatus()">{{muteStatus}}</a>
+                    <!-- {{muteStatus}} -->
+                  <!-- </button>         -->
+                </div>  
+                <!-- <div class="col"> -->
+                  <!-- <button class="button button button-assertive" ng-click="terminateCall()">
+                    Terminate
+                  </button>           -->
+                  <!-- <a class="button button-assertive" ng-model="muteStatus" ng-click="terminateCall()">{{muteStatus}}</a> -->
+                  
+                <!-- </div> -->
+              </div>              
+            </div>
+          </div>
+        </ion-list>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

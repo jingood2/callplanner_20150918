@@ -1,0 +1,27 @@
+<ion-view view-title="Start" ng-controller="HomeCtrl">
+ <!--  <ion-nav-buttons side="left">
+    <button class="button button-clear icon ion-android-add-circle" ui-sref="createplan">
+    </button>
+  </ion-nav-buttons> -->
+  
+  <ion-nav-buttons side="right">
+    <button class="button button-clear button-white icon ion-gear-a" ui-sref="settings" >
+    </button>
+  </ion-nav-buttons>
+
+  <ion-content class="custom-scroll-content custom-scroll" has-header="true" padding="true">
+    <div class="spacer" style=" height: 160px;"></div>
+    <div class="row row-center" >
+      <div class="col col-center">
+        <h3><p align="center">Right Now</p></h3>
+        <a class="button button-calm" style="margin: 3px; border-width: 2px; border-radius: 24px; border-color:gray; border-style:none; padding: 0 30px;" ui-sref="createplan({createtype: 'simple'})">Right Now</a>
+      </div>
+      <div class="col col-center" >
+        <h3>Schedule</h3>
+        <a class="button button-calm" style="margin: 3px; border-width: 2px; border-radius: 24px; border-color:gray; border-style:none; padding: 0 30px;" ui-sref="createplan({createtype: 'advance'})">Schedule</a>
+
+      </div>
+    </div>
+
+  </ion-content>
+</ion-view>

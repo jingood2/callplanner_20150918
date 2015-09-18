@@ -1,0 +1,117 @@
+<ion-view view-title="New plan">
+
+  <ion-nav-buttons side="left">
+    <button class="button-clear" ng-click="goBack()">
+      <a class="button ion-chevron-left button-clear button-white"></a>
+    </button>
+  </ion-nav-buttons>
+  <ion-nav-buttons side="right">
+    <button class="button-clear" ng-click="submit()" ui-sref="tab.plans">
+      <a class="button ion-checkmark button-clear button-white"></a>
+    </button>
+  </ion-nav-buttons>
+
+
+  <ion-content ng-init="init()" >
+    <ion-list>
+      <!-- <div class="container"> -->
+      <div class="item item-button-right">
+     
+        <span class="label">Attendants</span>
+     
+        <button class="button button-clear button-positive icon ion-ios-list" ui-sref="contacts">  
+        </button>
+     
+        <!-- <div class="spacer" style="height: 20px;"></div> -->
+      </div>
+      <div class="item-stable item-clear" style="margin: 4px;">    
+        <button ng-model="contactList" class="ion-button ion-button-outline" ng-repeat="contact in prefilter(contactList) " style="margin: 3px; border-width: 2px; background-color: #ffffff; border-radius: 10px; border-color:gray; border-style:dotted;" ng-click="removeNumber(contact.tel)" >
+            {{contact.name == '' ? contact.tel : contact.name}}
+        </button>
+      </div>
+ 
+      <div ng-switch on="createtype">
+        <div ng-switch-when="simple">
+          <label class="item item-button-right item-stacked-label">
+            <span class="icon ion-clock"></span>
+            <span class="input-label">Date</span>
+            <button class="button button-clear">
+              <h2>Now</h2>
+            </button>
+          </label>    
+        </div>
+
+        <div ng-switch-when="advance">
+          <label class="item item-input item-stacked-label">
+            <span class="icon ion-clock"></span>
+            <span class="input-label">From</span>
+            <!-- <input type="datetime-local" ng-model="plan.scheduledAt" required> -->
+            <input type="datetime-local" ng-model="plan.scheduledAt" placeholder="yyyy-MM-ddTHH:mm:ss" required>
+          </label>    
+          <label class="item item-input item-stacked-label">
+            <span class="icon ion-clock"></span>
+            <span class="input-label">To</span>
+            <!-- <input type="datetime-local" ng-model="plan.scheduledAt" required> -->
+            <input type="datetime-local" ng-model="plan.scheduledTo" placeholder="yyyy-MM-ddTHH:mm:ss" required>
+          </label>    
+
+        </div>
+      </div>
+      
+      <!-- <label class="item item-input item-stacked-label">
+        <span class="icon ion-clock"></span>
+        <span class="input-label">To</span>
+        <input type="datetime-local" ng-model="plan.scheduledAt" placeholder="yyyy-MM-ddTHH:mm:ss" required>
+      </label> -->
+      <ion-item class="item-stable"
+                ng-model="group" ng-click="toggleGroup(group)"
+                ng-class="{active: isGroupShown(group)}">
+          <i class="icon" ng-class="isGroupShown(group) ? 'ion-minus' : 'ion-plus'"></i>
+        Advanced Options
+      </ion-item>
+      <ion-list class="item-accordion "
+                ng-show="isGroupShown(group)">
+          <label class="item item-input item-stacked-label" >
+            <h2>Title </h2>
+            <input type="text" ng-model="plan.title" placeholder="Conference call">
+          </label>
+          
+          <label ng-if="createtype == 'advance'" class="item item-input item-select">
+            <div class="input-label">
+              Repeat
+            </div>
+            <select ng-model="plan.repeat">
+              <option id="once" >once</option>
+              <option id="daily" >daily</option>
+              <option id="weekly" >weekly</option>
+              <option id="monthly" >montly</option>
+            </select>
+          </label>
+
+          <div class="item item-button-right">
+            <h2>Announce</h2>
+            <button ng-model="plan.ment" class="button button-clear button-positive icon icon-right ion-ios-mic" ng-click="showAnnounceMenu()">
+              <h4>&nbsp;&nbsp;{{plan.ment.file}}</h4>
+            </button>
+          </div>
+
+          <ion-toggle ng-model="plan.record">
+                Recording
+          </ion-toggle>
+          
+
+<!--           <label class="item item-input item-select">
+            <div class="input-label">
+              How to join
+            </div>
+            <select>
+              <option selected>Receiving call</option>
+              <option>Sending call</option>
+            </select>
+          </label> -->
+          
+
+      </ion-list>
+    </ion-list>
+  </ion-content>
+</ion-view>

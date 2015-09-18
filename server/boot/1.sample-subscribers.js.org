@@ -1,0 +1,38 @@
+/**
+ *
+ *
+ * Created by kimjin-young on 2015. 6. 2..
+ */
+
+module.exports = function(app) {
+
+  var Subscriber = app.models.Subscriber;
+
+  var subscribers = [
+      {email: 'jingood1@gmail.com', password: 'c9744052', phone:'01044929591'},
+      {email: 'jingood2@gmail.com', password: 'c9744052', phone:'01044929599',exchangeEmail: 'jinyoungk@realnetworks.com'},
+      {email: 'jingood3@gmail.com', password: 'c9744052', phone:'01044929593', exchangeEmail: 'minsooKim@realnetworks.com'},
+      {email: 'jingood4@gmail.com', password: 'c9744052', phone:'01044929594'},
+      {email: 'jingood5@gmail.com', password: 'c9744052', phone:'01044929595'}
+    ];
+
+  var count = subscribers.length;
+
+    subscribers.forEach(function(subscriber){
+
+      Subscriber.create(subscriber, function(err, instance){
+        if(err)
+          return console.log(err);
+
+        console.log('Subscriber created:', instance);
+
+        count--;
+
+        if(count === 0)
+          console.log('Done');
+      })
+
+    });
+
+
+}

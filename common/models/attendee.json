@@ -1,0 +1,45 @@
+{
+  "name": "Attendee",
+  "base": "PersistedModel",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "tel": {
+      "type": "string",
+      "required": true
+    },
+    "role": {
+      "type": "string",
+      "required": true
+    },
+    "accept": {
+      "type": "string",
+      "required": "in"
+    },
+    "connected": {
+      "type": "string",
+      "default": false
+    },
+    "exchangeEmail": {
+      "type": "string",
+      "required": false
+    }
+  },
+  "validations": [],
+  "relations": {
+    "plan": {
+      "type": "belongsTo",
+      "model": "Plan",
+      "foreignKey": "planId"
+    },
+    "subscriber": {
+      "type": "belongsTo",
+      "model": "Subscriber",
+      "foreignKey": "userId"
+    }
+  },
+  "acls": [],
+  "methods": []
+}

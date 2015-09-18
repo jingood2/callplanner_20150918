@@ -1,0 +1,28 @@
+  
+<ion-view view-title="History">
+  <ion-nav-buttons side="left">
+    <button class="button button-clear icon ion-android-add-circle" ui-sref="tab.home">
+    </button>
+  </ion-nav-buttons>
+  <ion-nav-buttons side="right">
+    <button class="button button-clear button-white icon ion-gear-a" ui-sref="settings" >
+    </button>
+  </ion-nav-buttons>
+
+  <ion-content>
+    <ion-refresher pulling-text="Refresh" on-refresh="doRefresh()">
+    </ion-refresher>
+    <ion-list>
+      <ion-item class="item-remove-animate item-avatar item-icon-right" collection-repeat="history in histories" type="item-text-wrap">
+        <img ng-src="{{parseImgUrl(history.plan.repeat)}}">
+        <h2>{{plan.plan.title}}</h2>
+        <p>{{plan.plan.scheduledAt}}</p>
+        <p>{{parseAttendees(plan.plan.attendees)}}</p>
+
+        <ion-button ng-click="play(plan)">
+          <i class="icon ion-play"></i>
+        </ion-button>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

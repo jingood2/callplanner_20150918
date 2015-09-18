@@ -1,0 +1,108 @@
+<ion-view view-title=" New Plan" >
+  <ion-nav-buttons side="left">
+    <button class="button-clear" ng-click="$ionicGoBack()">
+      Back
+    </button>
+  </ion-nav-buttons>
+  <ion-nav-buttons side="right">
+    <button class="button-clear" ng-click="showConfirmPlan()">
+      Save
+    </button>
+  </ion-nav-buttons>
+  <ion-content>
+      <form ng-submit="createPlan()">
+        <div class="ion-list" >
+          <ion-toggle toggle-class="toggle-dark" ng-model="plan.enabled"> <h2>Plan On/Off</h2></ion-toggle>
+
+          <label class="item item-input item-stacked-label" >
+            <h2>Title </h2>
+            <input type="text" ng-model="plan.title" placeholder="Conference call">
+          </label>
+          <ion-toggle toggle-class="toggle-balanced" ng-model="plan.record"><h2>Recording</h2></ion-toggle>
+
+          <label class="item item-input item-select">
+            <div class="input-label">
+              <h2>Greeting</h2>
+            </div>
+            <select ng-model="plan.ment.file">
+              <option selected> Introduce this plan</option>
+              <option>Music</option>
+              <option>Silence</option>
+              <option>Company Ad</option>
+              <option>Create custom greeting</option>
+            </select>
+          </label>
+
+          <label class="item item-input item-stacked-label">
+            <span class="icon ion-clock"></span>
+            <span class="input-label">From</span>
+            <input type="datetime-local" ng-model="plan.scheduledAt" placeholder="yyyy-MM-ddTHH:mm:ss" required>
+          </label>
+
+          <label class="item item-input item-stacked-label">
+            <span class="icon ion-clock"></span>
+            <span class="input-label">To</span>
+            <input type="datetime-local">
+          </label>
+        </div>
+
+        <div class="container" >
+          <div class="md-chip md-chip-white" ng-click="chips()">
+            <span class="md-chip-text">김진영</span>
+          </div>
+          <div class="md-chip md-chip-white" ng-click="chips()">
+            <span class="md-chip-text">김민수</span>
+          </div>
+        </div>
+
+        <!--
+        <label class="item">
+          <button style="width:50%" class="button button-raised button-block button-assertive ink-dark" type="submit">Cancel</button>
+          <button style="width:50%" class="button button-raised button-block button-positive ink-dark" type="submit">Create</button>
+        </label>
+        -->
+
+      </form>
+
+    <!--
+    <ionic-datepicker idate="currentDate" disablepreviousdates="true"  callback="datePickerCallback">
+      <button class="button button-clear button-block button-positive"> {{ currentDate | date:'dd - MMMM - yyyy' }}    </button>
+    </ionic-datepicker>
+    -->
+
+  </ion-content>
+
+  <script id="templates/popup.html" type="text/ng-template">
+    <div class="list">
+      <a class="item item-icon-left">
+        <i class="icon ion-easel"></i>
+        <span class="item-note">{{plan.title}}</span>
+      </a>
+      <a class="item item-icon-left">
+        <i class="icon ion-calendar"></i>
+        <span class="item-note">{{plan.scheduledAt | date: 'medium'}}</span>
+      </a>
+      <a class="item item-icon-left">
+        <i class="icon ion-ios-recording"></i>
+        <span class="item-note">{{plan.record}}</span>
+      </a>
+
+      <a class="item item-icon-left">
+        <i class="icon ion-person-stalker"></i>
+        <span class="item-note" text-align="left">jinyoung Kim</span><br/>
+        <span class="item-note" text-align="left">minsoo Kim</span><br/>
+        <span class="item-note" text-align="left">teddy Kim</span>
+      </a>
+
+      <!--
+      <div class="item item-divider">
+        Enter description
+      </div>
+      <div class="item item-text-wrap nmr-textarea-wrapper">
+        <textarea ng-model="description" placeholder="Enter some text"></textarea>
+      </div>
+      -->
+    </div>
+  </script>
+
+</ion-view>

@@ -1,0 +1,30 @@
+<ion-modal-view ng-controller="SignupCtrl">
+  <ion-header-bar class="bar-positive">
+    <h1 class="title">Sign up</h1>
+    <div class="buttons">
+      <button class="button button-clear ion-android-arrow-back button-left" ng-click="closeModal(2)"></button>
+    </div>
+  </ion-header-bar>
+  <ion-content  padding="true" scroll="false">
+    <form ng-submit="signup()">
+      <div class="list">
+        <label class="item item-input">
+          <input type="email" placeholder="user@domain.com" ng-model="registration.email">
+        </label>
+        <label class="item item-input">
+          <input type="password" placeholder="password" ng-model="registration.password">
+        </label>
+        <label class="item item-input">
+          <input type="tel" placeholder="phone" ng-model="registration.tel">
+        </label>
+        <!-- <label class="item"> -->
+          <button class="button button-block button-positive" type="submit">Sign up</button>
+        <!-- </label> -->
+<!--         <label class="item">
+          <button class="button icon-left ion-social-google button-assertive-900">Google+</button>
+          <button class="button icon-left ion-social-facebook button-positive-900">Facebook</button>
+        </label> -->
+      </div>
+    </form>
+  </ion-content>
+</ion-modal-view>

@@ -1,0 +1,77 @@
+{
+  "name": "Plan",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "id": {
+      "type": "string",
+      "id": true
+    },
+    "callType": {
+      "type": "string",
+      "default": "time"
+    },
+    "ment": {
+      "type": "object",
+      "default": {
+        "container": "phone",
+        "file": "default.wav"
+      }
+    },
+    "scheduledAt": {
+      "type": "date"
+    },
+    "repeat": {
+      "type": "string",
+      "default": "once"
+    },
+    "title": {
+      "type": "string",
+      "default": "콜 플래너 서비스"
+    },
+    "enabled": {
+      "type": "boolean",
+      "default": true
+    },
+    "callState": {
+      "type": "string",
+      "default": "disconnected"
+    },
+    "conferenceNum": {
+      "type": "string"
+    },
+    "locationPoint": {
+      "type": "geopoint",
+      "required": false
+    },
+    "attendees": {
+      "type": [
+        "object"
+      ]
+    },
+    "record": {
+      "type": "string",
+      "default": "false"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "subscriber": {
+      "type": "belongsTo",
+      "model": "Subscriber",
+      "foreignKey": "ownerId"
+    },
+    "attendees": {
+      "type": "hasMany",
+      "model": "Attendee",
+      "foreignKey": "planId"
+    }
+  },
+  "acls": [
+
+  ],
+  "methods": []
+}

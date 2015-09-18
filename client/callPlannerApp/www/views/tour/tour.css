@@ -1,0 +1,53 @@
+/**
+ * Slide Box
+ * --------------------------------------------------
+ */
+#tour-view .slider {
+  position: relative;
+  visibility: hidden;
+  overflow: hidden;
+  height: 100%;
+}
+
+#tour-view .slider-slides {
+  position: relative;
+  height: 100%;
+}
+
+#tour-view .slider-slide {
+  position: relative;
+  display: block;
+  float: left;
+  width: 100%;
+  height: 100%;
+  vertical-align: top;
+}
+
+#tour-view .slider-slide-image > img {
+
+
+}
+
+#tour-view .slider-pager {
+  position: absolute;
+  bottom: 20px;
+  z-index: 1;
+  width: 100%;
+  height: 15px;
+  text-align: center;
+}
+
+
+#tour-view .slider-pager .slider-pager-page {
+  display: inline-block;
+  margin: 0px 3px;
+  width: 15px;
+  color: #000;
+  text-decoration: none;
+  opacity: 0.3;
+}
+#tour-view .slider-pager .slider-pager-page.active {
+  -webkit-transition: opacity 0.4s ease-in;
+  transition: opacity 0.4s ease-in;
+  opacity: 1;
+}

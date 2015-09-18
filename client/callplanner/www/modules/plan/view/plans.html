@@ -1,0 +1,30 @@
+
+<ion-view view-title="Plan">
+  <ion-nav-buttons side="left">
+    <button class="button button-clear icon ion-android-add-circle" ui-sref="tab.home">
+    </button>
+  </ion-nav-buttons>
+  <ion-nav-buttons side="right">
+    <button class="button button-clear button-white icon ion-gear-a" ui-sref="settings" >
+    </button>
+  </ion-nav-buttons>
+  <ion-content>
+    <ion-refresher pulling-text="Refresh" on-refresh="doRefresh()">
+    </ion-refresher>
+    <ion-list>
+      <ion-item ng-model="planArray" class="item-remove-animate item-avatar item-icon-right" collection-repeat="plan in planArray | orderBy: 'plan.planId'" type="item-text-wrap" href="#/tab/plans/{{plan}}?">
+      <!-- href="#/tab/plans/{{plan.id}}" -->
+        <img ng-src="{{parseImgUrl(plan.plan.repeat)}}">
+        <h2>{{plan.plan.title}}</h2>
+        <p>{{getDateStr(plan.plan.scheduledAt)}}</p>
+        <p>{{parseAttendees(plan.plan.attendees)}}</p>
+        <p>CallState:{{plan.plan.callState}}</p>
+        <i class="icon ion-chevron-right icon-accessory"></i>
+
+        <ion-option-button class="button-assertive" ng-click="remove(plan)">
+          <i class="icon ion-ios-trash"></i>
+        </ion-option-button>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

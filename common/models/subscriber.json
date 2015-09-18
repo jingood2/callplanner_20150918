@@ -1,0 +1,88 @@
+{
+  "name": "Subscriber",
+  "base": "User",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "id": {
+      "type": "string",
+      "id": true
+    },
+    "tel": {
+      "type": "String",
+      "required": false
+    },
+    "exchangeEmail": {
+      "type": "String",
+      "required": false
+    },
+    "exchangePassword": {
+      "type": "String",
+      "required": false
+    },
+    "firstname": {
+      "type": "String",
+      "required": false
+    },
+    "lastname": {
+      "type": "String",
+      "required": false
+    }
+  },
+  "validations": [],
+  "relations": {
+    "plans": {
+      "type": "hasMany",
+      "model": "Plan",
+      "foreignKey": "ownerId",
+      "through": ""
+    },
+    "planHistories": {
+      "type": "hasMany",
+      "model": "callHistory",
+      "foreignKey": "",
+      "through": ""
+    },
+    "attendees": {
+      "type": "hasMany",
+      "model": "Attendee",
+      "foreignKey": "",
+      "through": ""
+    },
+    "histories": {
+      "type": "hasMany",
+      "model": "History",
+      "foreignKey": "ownerId"
+    }
+  },
+  "acls": [
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY"
+    },
+    {
+      "accessType": "READ",
+      "principalType": "ROLE",
+      "principalId": "$owner",
+      "permission": "ALLOW"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW",
+      "property": "create"
+    },
+    {
+      "accessType": "WRITE",
+      "principalType": "ROLE",
+      "principalId": "$owner",
+      "permission": "ALLOW"
+    }
+  ],
+  "methods": []
+}
