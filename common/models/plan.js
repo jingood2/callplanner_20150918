@@ -3,6 +3,9 @@
 var _ = require('underscore');
 var scheduler = require('../../server/lib/scheduler.js');
 
+//var agenda = require('../lib/agenda.js');
+
+
 
 module.exports = function(Plan) {
 
@@ -58,6 +61,7 @@ module.exports = function(Plan) {
     if(ctx.result) {
       console.log('Succeed to create Plan :' + JSON.stringify(ctx.result));
       scheduler.addPlanJob(plan.id,plan);
+
     } else {
       console.log('Fail to create Plan!', ctx.error);
     }

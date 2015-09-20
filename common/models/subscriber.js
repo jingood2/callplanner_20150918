@@ -1,7 +1,6 @@
 
 var _ = require('underscore');
 var request = require('request');
-var scheduler = require('../../server/lib/scheduler.js');
 
 module.exports = function(Subscriber) {
 

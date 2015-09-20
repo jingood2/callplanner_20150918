@@ -5,7 +5,7 @@
 
 var Agenda = require('agenda');
 var rp = require('request-promise');
-var app = require('../server');
+var app = require('../server.js');
 var _ = require('underscore');
 var connectionOpts = app.get('agendaDB').host + ':' + app.get('agendaDB').port + '/' + app.get('agendaDB').database;
 var agenda = new Agenda({db: {address: connectionOpts }});
@@ -68,9 +68,11 @@ exports.addPlanJob = function(jobName, data) {
 
         recordFilename = new Date().toISOString() + '.wav';
 
+        /*
         _.each(job.attrs.data.__data.attendees, function(attendee){
           attendee.planId = jobName;
         });
+        */
 
         var options = {
             url: familyCallServerUrl,
@@ -83,9 +85,94 @@ exports.addPlanJob = function(jobName, data) {
               "record": job.attrs.data.record,
               "recordFilename" : recordFilename,
               "callType" : job.attrs.data.callType,
-              "greetingAnn" : ment,
-              "attendants" : job.attrs.data.__data.attendees }
+              "greetingAnn" : ment
+            }
         };
+
+        app.models.Attendee.find({where: {planId: jobName}},function(err,attendees){
+
+            if(err) console.log(err);
+
+            options.attendants = attendees;
+
+            console.log('attendees :' + JSON.stringify(options.attendants));
+
+
+            client.lpop('conferenceId', function(err,confId){
+                var calledAt = new Date();
+
+                var historyInfo = {
+                    id : historyId,
+                    planId: job.attrs.data.id,
+                    pincode : confId,
+                    plannerId: job.attrs.data.plannerId,
+                    planInfo : {
+                        'title': job.attrs.data.title,
+                        'enabled': job.attrs.data.enabled,
+                        'callType': job.attrs.data.callType,
+                        'record': job.attrs.data.record,
+                        'recordFilename' : recordFilename,
+                        'ment': job.attrs.data.ment,
+                        'calledAt' : calledAt,
+                        'scheduledAt': job.attrs.data.scheduledAt,
+                        'repeat': job.attrs.data.repeat,
+                        'attendees': options.attendants}
+                };
+
+
+                if(err) console.log(err);
+
+
+                options.accessNo = confId;
+                rp.post(options)
+                    .then(function(response){
+
+                        historyInfo.result = response.statusMessage;
+
+
+                        app.models.Plan.updateAll({id:jobName},{callState:'connected', "conferenceNum" : confId},function(err,info) {
+                            if (err) console.log(err);
+                        });
+
+                        _.each(attendees, function(attendee){
+
+                            if(attendee.accept != 'no' && attendee.userId != null) {
+
+                                var secondNoti = {
+                                    url: 'http://192.168.4.29:4004/notify/' + attendee.userId,
+                                    json: true,
+                                    body: { title: job.attrs.data.title, scheduledAt: calledAt }
+                                }
+
+                                console.log('secondNoti:' + JSON.stringify(secondNoti));
+
+                                rp.post(secondNoti)
+                                    .then(function(response){
+                                        console.log('Push Notification Success: ' + attendee.userId);
+                                    })
+                                    .catch(console.error);
+                            }
+                        });
+                    })
+                    .catch(function(response){
+                        historyInfo.result = response.cause.message;
+
+                        console.log('send Request Error:' + historyInfo.result);
+                    })
+                    .finally(function(){
+
+                        console.log('Result of Conference Request: ' + historyInfo.result);
+
+                        app.models.History.create(historyInfo,function(err,obj){
+                            if(err) console.log(err);
+                        });
+
+
+                    }); // request
+
+            }); // lpop
+
+        });
 
       /*
         client.on("error", function(err){
@@ -96,6 +183,7 @@ exports.addPlanJob = function(jobName, data) {
         });
         */
 
+        /*
         client.lpop('conferenceId', function(err,confId){
           var calledAt = new Date();
           var historyInfo = {
@@ -160,6 +248,7 @@ exports.addPlanJob = function(jobName, data) {
             }); // request
 
         }); // lpop
+        */
 
         done();
 
@@ -185,6 +274,7 @@ exports.addPlanJob = function(jobName, data) {
 
       _.each(data.__data.attendees, function(attendee){
 
+          /*(
         if(attendee.userId != null) {
           firstNoti.url = 'http://192.168.4.29:4004/notify/' + attendee.userId;
           console.log('First noti message: ' + JSON.stringify(firstNoti));
@@ -194,6 +284,7 @@ exports.addPlanJob = function(jobName, data) {
             })
             .catch(console.error);
         }
+        */
       });
    }
 

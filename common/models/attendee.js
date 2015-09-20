@@ -3,22 +3,13 @@ module.exports = function(Attendee) {
   // get planList
   Attendee.attendeeStatus = function(attendants, cb) {
 
-    console.log('[Attendee] arg attendants:' + attendants);
+    console.log('[Attendee] planId:' + JSON.stringify(attendants.planId) + 'tel: ' + JSON.stringify(attendants.tel));
 
-    Attendee.find({where: {and:[{planId: attendants.planId},{tel: attendants.tel}]}},function(err,info){
-
+    Attendee.updateAll({planId: attendants.planId,tel: attendants.tel},attendants,function(err,info){
       if(err)
         console.log(err);
       else {
-        console.log('[Attendee] find info' + info);
-
-        Attendee.updateAll({id:info[0].__data.id},attendants,function(err,info){
-          if(err)
-            console.log(err);
-          else
-            console.log('[Attendee] update info' + info);
-        });
-
+        console.log('[Attendee] find info' + JSON.stringify(info));
       }
       cb(null);
     });

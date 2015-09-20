@@ -16,7 +16,8 @@
     },
     "accept": {
       "type": "string",
-      "required": "in"
+      "required": false,
+      "default" : "in"
     },
     "connected": {
       "type": "string",
