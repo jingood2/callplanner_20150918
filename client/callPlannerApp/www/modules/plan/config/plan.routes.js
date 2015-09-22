@@ -11,20 +11,61 @@ angular.module('com.module.plan')
       .state('app.plan',{
         abstract: true,
         url: '/plan',
-        templateUrl: 'modules/plan/views/main.html'
+        templateUrl: 'modules/plan/views/tabs.html'
       })
-      .state('app.plan.planList',{
-        url: '',
-        templateUrl: 'modules/plan/views/planList.html',
-        controller: 'PlanListCtrl'
+      .state('app.plan.planlist',{
+        url: '/planlist',
+        views: {
+          'planlist-tab' : {
+            controller: 'PlanListCtrl',
+            templateUrl: 'modules/plan/views/planList.html'
+          }
+        }
+      })
+      .state('app.plan.detail',{
+        url: '/planDetail',
+        views: {
+          'planlist-tab' : {
+            controller: 'PlanDetailCtrl',
+            templateUrl: 'modules/plan/views/planDetail.html'
+          }
+        }
       })
       .state('app.plan.contacts',{
         url: '/contacts',
-        templateUrl: 'modules/plan/views/contacts.html'
+        views: {
+          'planlist-tab' : {
+            controller: 'ContactsCtrl',
+            templateUrl: 'modules/plan/views/contacts.html'
+          }
+        }
       })
-      .state('app.plan.createPlan',{
-        url: '/createPlan',
-        templateUrl: 'modules/plan/views/createPlan.html',
-        controller: 'CreatePlanCtrl'
-      });
+      .state('app.plan.form',{
+        url: '/form',
+        views: {
+          'planlist-tab' : {
+            controller: 'createPlanCtrl',
+            templateUrl: 'modules/plan/views/createPlan.html'
+          }
+        }
+      })
+      .state('app.plan.greeting',{
+        url: '/form',
+        views: {
+          'planlist-tab' : {
+            controller: 'GreetingCtrl',
+            templateUrl: 'modules/plan/views/greeting.html'
+          }
+        }
+      })
+      .state('app.plan.history',{
+        url: '/history',
+        views: {
+          'history-tab' : {
+            controller: 'HistoryCtrl',
+            templateUrl: 'modules/plan/views/history.html'
+          }
+        }
+
+      })
   });
