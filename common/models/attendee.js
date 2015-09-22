@@ -1,11 +1,14 @@
 module.exports = function(Attendee) {
 
   // get planList
-  Attendee.attendeeStatus = function(attendants, cb) {
+  Attendee.attendeeStatus = function(data, cb) {
 
-    console.log('[Attendee] planId:' + JSON.stringify(attendants.planId) + 'tel: ' + JSON.stringify(attendants.tel));
+    console.log('[Attendee] planId:' + data.attendants.planId + 'tel: ' + data.attendants.tel);
 
-    Attendee.updateAll({planId: attendants.planId,tel: attendants.tel},attendants,function(err,info){
+    Attendee.updateAll({planId: data.attendants.planId,tel: data.attendants.tel},data.attendants,function(err,info){
+
+      console.log('[Attendee] find info' + JSON.stringify(info));
+
       if(err)
         console.log(err);
       else {

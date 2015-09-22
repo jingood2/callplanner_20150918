@@ -93,9 +93,7 @@ exports.addPlanJob = function(jobName, data) {
 
             if(err) console.log(err);
 
-            options.attendants = attendees;
-
-            console.log('attendees :' + JSON.stringify(options.attendants));
+            options.body.attendants = attendees;
 
 
             client.lpop('conferenceId', function(err,confId){
@@ -123,7 +121,9 @@ exports.addPlanJob = function(jobName, data) {
                 if(err) console.log(err);
 
 
-                options.accessNo = confId;
+                options.body.accessNo = confId;
+
+                console.log('request :' + JSON.stringify(options));
                 rp.post(options)
                     .then(function(response){
 
@@ -141,7 +141,7 @@ exports.addPlanJob = function(jobName, data) {
                                 var secondNoti = {
                                     url: 'http://192.168.4.29:4004/notify/' + attendee.userId,
                                     json: true,
-                                    body: { title: job.attrs.data.title, scheduledAt: calledAt }
+                                    body: { type: 'launching', title: job.attrs.data.title, scheduledAt: calledAt }
                                 }
 
                                 console.log('secondNoti:' + JSON.stringify(secondNoti));
@@ -258,10 +258,10 @@ exports.addPlanJob = function(jobName, data) {
     job.attrs.type = 'single';
 
     // run job for planId
-    if(data.repeat == 'now') {
+    if(data.__data.repeat == 'now') {
         job.schedule('now');
     } else {
-        if(data.repeat == 'once') {
+        if(data.__data.repeat == 'once') {
             job.schedule(this.planStartAt(data.__data.repeat,data.__data.scheduledAt));
         } else {
             job.repeatEvery(this.planStartAt(data.__data.repeat,data.__data.scheduledAt));
@@ -269,22 +269,20 @@ exports.addPlanJob = function(jobName, data) {
 
         var firstNoti = {
           json: true,
-          body: { title: data.__data.title, scheduledAt: data.__data.scheduledAt }
+          body: { type: 'checkAccept', title: data.__data.title, planId: jobName, scheduledAt: data.__data.scheduledAt }
         }
 
       _.each(data.__data.attendees, function(attendee){
 
-          /*(
         if(attendee.userId != null) {
           firstNoti.url = 'http://192.168.4.29:4004/notify/' + attendee.userId;
           console.log('First noti message: ' + JSON.stringify(firstNoti));
           rp.post(firstNoti)
             .then(function(response){
-              console.log('Push Notification Success: ' + attendee.userId);
+              console.log('First Push Notification Success: ' + attendee.userId);
             })
             .catch(console.error);
         }
-        */
       });
    }
 
