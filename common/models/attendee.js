@@ -3,20 +3,12 @@ module.exports = function(Attendee) {
   // get planList
   Attendee.attendeeStatus = function(data, cb) {
 
-    console.log('[Attendee] planId:' + data.attendants.planId + 'tel: ' + data.attendants.tel);
-
     Attendee.updateAll({planId: data.attendants.planId,tel: data.attendants.tel},data.attendants,function(err,info){
 
-      console.log('[Attendee] find info' + JSON.stringify(info));
+      if(err) return cb(err);
 
-      if(err)
-        console.log(err);
-      else {
-        console.log('[Attendee] find info' + JSON.stringify(info));
-      }
       cb(null);
     });
-
   }
 
   Attendee.remoteMethod(
@@ -28,6 +20,7 @@ module.exports = function(Attendee) {
 
   );
 
+  /*
     Attendee.beforeRemote('create', function(ctx, attendee, next) {
 
       var req = ctx.req;
@@ -42,24 +35,5 @@ module.exports = function(Attendee) {
       }
 
     });
-
-
-    Attendee.beforeRemote('create', function(ctx, affectedModelInstance, next) {
-
-        // is a member ?
-        // has a exchange account ?
-
-        var app = Attendee.app;
-
-        console.log(affectedModelInstance);
-
-        next();
-
-    });
-
-    Attendee.afterRemote('create', function(ctx, affectedModelInstance, next) {
-
-        next();
-
-    });
+    */
 };

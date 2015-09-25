@@ -45,7 +45,6 @@ module.exports = function(Subscriber) {
 
   });
 
-
   Subscriber.observe('after delete', function(ctx,next){
 
     var app = Subscriber.app;
@@ -54,15 +53,11 @@ module.exports = function(Subscriber) {
     app.models.Plan.find({where: {ownerId: ctx.where.id}},function(err,records){
       _.each(records,function(record){
         app.models.Plan.destroyById(record.id,function(err){
-
           if(err) console.stack(err);
-
-          console.log('deleted Plan(%s) count ', record.id);
         });
 
       });
     });
-
     next();
 
   })

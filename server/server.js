@@ -1,7 +1,57 @@
 var loopback = require('loopback');
 var boot = require('loopback-boot');
+var bunyan = require('bunyan');
+var bunyanMiddleware = require('bunyan-middleware');
 
 var app = module.exports = loopback();
+
+/*
+var logger = bunyan.createLogger({
+    name: 'callplanner',
+    streams:[
+        {
+            level: 'debug',
+            type: 'rotating-file',
+            path: './access.log',
+            period: '1d',
+            count:3
+        },
+        {
+            level: 'error',
+            type: 'rotating-file',
+            path:  './error.log',
+            period: '1d',
+            count:3
+        }
+    ]
+})
+*/
+
+app.middleware('initial',bunyanMiddleware(
+    {
+        headerName : 'X-Request-Id',
+        propertyName: 'reqId',
+        logName: 'req_id',
+        obscureHeaders: [],
+        logger: bunyan.createLogger({
+            name: 'callplanner',
+            streams:[
+                {
+                    level: 'debug',
+                    path: './access.log',
+                    period: '1d',
+                    count: 3
+                },
+                {
+                    level: "error",
+                    type: 'rotating-file',
+                    path: './error.log',
+                    period: '1d',
+                    count: 3
+                }
+            ]})
+    })
+);
 
 app.start = function() {
   // start the web server

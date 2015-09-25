@@ -9,11 +9,7 @@ var scheduler = require('../../server/lib/scheduler.js');
 
 module.exports = function(Plan) {
 
-  /*
-   * custom REST API
-   */
-
-  // get planList
+  // plan list endpoint
   Plan.listPlans = function(request, cb) {
 
     var app = Plan.app;
@@ -36,9 +32,40 @@ module.exports = function(Plan) {
     'listPlans',
     {
       accepts: { arg: 'request', type: 'object', http:{source: 'req'}},
-      http: {path: '/listPlans', verb: 'get'},
+      http: {path: '/listPlans', verb: 'get', status: '201', errorStatus:'400'},
       returns : { arg: 'listPlans', type: 'array'}
     }
+
+  );
+
+  Plan.details = function(id,cb) {
+
+    var app = Plan.app;
+    var attendee = app.models.Attendee;
+
+    Plan.findById(id
+    ,function(err,details){
+      if(err) console.log(err);
+      else {
+        attendee.find({where: {planId: id}}, function (err, attendees) {
+
+          if(details)
+            details.__data.attendees = attendees;
+
+          cb(err,details);
+
+        });
+      }
+    });
+  }
+
+  Plan.remoteMethod(
+      'details',
+      {
+        accepts: {arg: 'id', type: 'string', required: true},
+        http: {path: '/:id/Details', verb: 'get', status: '201', errorStatus:'400'},
+        returns : { arg: 'details', type: 'object'}
+      }
 
   );
 
@@ -61,11 +88,12 @@ module.exports = function(Plan) {
     if(ctx.result) {
       console.log('Succeed to create Plan :' + JSON.stringify(ctx.result));
       scheduler.addPlanJob(plan.id,plan);
+      next();
 
     } else {
       console.log('Fail to create Plan!', ctx.error);
+      next(ctx.error);
     }
-    next();
 
   });
 
