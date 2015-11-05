@@ -1,0 +1,13 @@
+{
+   "db" :
+    {
+      "host": "docker_mongodb_1",
+      "port": 27017,
+      "connector": "mongodb",
+      "user": "callPlanner",
+      "database":"callPlanner_db2"
+    }
+}
+
+
+
