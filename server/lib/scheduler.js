@@ -148,15 +148,21 @@ exports.addPlanJob = function(jobName, data) {
                 };
 
 
+                if(confId == null) {
+                    historyInfo.result = "error: RESOURCE_NOT_AVAILABLE";
+                    app.models.History.create(historyInfo,function(err,obj){
+                        if(err) console.log(err);
+                    });
+
+                    return;
+                }
+
                 if(err) console.log(err);
 
 
                 options.body.accessNo = confId;
 
-				console.log('1.confId:' + confId);
-				console.log('2.confId:' + options.body.accessNo);
-
-                console.log('request :' + JSON.stringify(options));
+                console.info('request :' + JSON.stringify(options));
                 rp.post(options)
                     .then(function(response){
 
@@ -208,12 +214,6 @@ exports.addPlanJob = function(jobName, data) {
         });
 
         done();
-
-        /*
-        client.quit(function(err,res){
-            console.log("Exiting from quit commaind");
-        });
-        */
 
     }); // agenda define
 

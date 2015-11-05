@@ -9,7 +9,7 @@ var version = p.version.split('.').shift();
 
 var conf = {
   hostname: '0.0.0.0',
-  port: 3000,
+  port: 3001,
   restApiRoot: '/api' + (version > 0 ? '/v' + version : '') , // The path where to mount the REST API app
   legacyExplorer: false
 };

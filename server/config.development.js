@@ -38,7 +38,7 @@ module.exports = {
   },
 
   contentmanager: {
-    url: 'http://localhost:3002/api',
+    url: 'http://localhost:3002',
     port: 3002
   },
   pushserver: {
