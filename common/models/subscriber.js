@@ -9,7 +9,7 @@ module.exports = function(Subscriber) {
     var req = ctx.req;
     var host = req.headers.host;
     var contentmanager = Subscriber.app.get('contentmanager');
-    var baseUrl = 'http://' + contentmanager.host + ':' + contentmanager.port + '/api';
+    var baseUrl = contentmanager.url + '/api';
 
     request({
       url: baseUrl + '/mentStorages',

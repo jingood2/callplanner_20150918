@@ -3,19 +3,16 @@
 var _ = require('underscore');
 var scheduler = require('../../server/lib/scheduler.js');
 
-//var agenda = require('../lib/agenda.js');
-
-
 
 module.exports = function(Plan) {
 
   // plan list endpoint
-  Plan.listPlans = function(request, cb) {
+  Plan.listPlans = function(userId, cb) {
 
     var app = Plan.app;
     var attendee = app.models.Attendee;
 
-    ownerId =  request.accessToken.userId;
+    var ownerId = userId;
 
     attendee.find({
       include: 'plan', where: {userId: ownerId}
@@ -31,8 +28,8 @@ module.exports = function(Plan) {
   Plan.remoteMethod(
     'listPlans',
     {
-      accepts: { arg: 'request', type: 'object', http:{source: 'req'}},
-      http: {path: '/listPlans', verb: 'get', status: '201', errorStatus:'400'},
+      accepts: { arg: 'userId', type: 'string'},
+      http: {path: '/listPlans', verb: 'get', status: '201', errorStatus:'401'},
       returns : { arg: 'listPlans', type: 'array'}
     }
 
@@ -71,6 +68,7 @@ module.exports = function(Plan) {
 
   Plan.beforeRemote('create', function(ctx, affectedModelInstance, next) {
 
+    /*
     var req = ctx.req;
 
     if(ctx.req.accessToken) {
@@ -78,9 +76,14 @@ module.exports = function(Plan) {
       req.body.ownerId = req.accessToken.userId;
       next();
     } else {
-      next(new Error("must be logged in to create plan"));
-    }
+      var err = new Error();
 
+      ctx.res.status(401);
+      ctx.res.render('error', { error: 'error!!!!!!!'});
+      next();
+    }
+    */
+    next();
   })
 
   Plan.afterRemote('create', function(ctx, plan, next) {

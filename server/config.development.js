@@ -1,15 +1,7 @@
 var GLOBAL_CONFIG = require('../global-config');
 
-var isDevEnv = (process.env.NODE_ENV || 'development') === 'development';
 
 module.exports = {
-  port: GLOBAL_CONFIG.port,
-  host: GLOBAL_CONFIG.hostname,
-  restApiRoot: GLOBAL_CONFIG.restApiRoot,
-  livereload: process.env.LIVE_RELOAD,
-  isDevEnv: isDevEnv,
-  legacyExplorer: GLOBAL_CONFIG.legacyExplorer,
-
   remoting: {
     errorHandler: { disalbeStackTrace: false },
     json: { strict: false, limit: '100kb'},
@@ -41,13 +33,16 @@ module.exports = {
   },
 
   familyCallServer: {
-    host: '221.146.204.182',
+    url: 'http://221.146.204.185:9090',
     port: 9090
   },
 
   contentmanager: {
-    host: 'localhost',
-    port: 3003
+    url: 'http://localhost:3002/api',
+    port: 3002
+  },
+  pushserver: {
+    url: 'http://localhost:3001',
+    port: 3001
   }
-
 };

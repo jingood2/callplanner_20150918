@@ -8,6 +8,8 @@
   "dependencies": {
     "agenda": "^0.6.28",
     "body-parser": "^1.12.4",
+    "bunyan": "^1.5.1",
+    "bunyan-middleware": "^0.2.1",
     "compression": "^1.0.3",
     "cors": "^2.5.2",
     "errorhandler": "^1.1.1",
@@ -24,8 +26,7 @@
     "serve-favicon": "^2.0.1",
     "sprintf": "^0.1.5",
     "underscore": "^1.8.3",
-    "uuid": "^2.0.1",
-    "winston": "^1.0.0"
+    "uuid": "^2.0.1"
   },
   "optionalDependencies": {
     "loopback-explorer": "^1.1.0"
@@ -41,5 +42,29 @@
     "type": "",
     "url": ""
   },
-  "description": "callplanner_v2"
+  "description": "callplanner_v2",
+  "bundleDependencies": [
+    "agenda",
+    "body-parser",
+    "bunyan",
+    "bunyan-middleware",
+    "compression",
+    "cors",
+    "errorhandler",
+    "loopback",
+    "loopback-boot",
+    "loopback-connector-mongodb",
+    "loopback-connector-mysql",
+    "loopback-connector-redis",
+    "loopback-datasource-juggler",
+    "loopback-explorer",
+    "morgan",
+    "redis",
+    "request",
+    "request-promise",
+    "serve-favicon",
+    "sprintf",
+    "underscore",
+    "uuid"
+  ]
 }

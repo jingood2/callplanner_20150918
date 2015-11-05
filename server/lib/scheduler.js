@@ -19,7 +19,7 @@ exports.planStartAt = (function(repeat,scheduledAt) {
 
     switch(repeat) {
 
-        case 'none' :
+        case 'once' :
             return scheduledAt;
         case 'daily' :
             format = startDate.getMinutes() + ' ' + startDate.getHours() + ' ' + '* * *';
@@ -39,9 +39,44 @@ exports.planStartAt = (function(repeat,scheduledAt) {
         default :
             return scheduledAt;
     }
-
-
 });
+
+exports.pushStartAt = (function(repeat,scheduledAt) {
+
+    var startDate = scheduledAt;
+    var whichday;
+
+    console.log('scheduledAt : %s min:%s hour:%s day:%s', startDate, startDate.getMinutes(),startDate.getHours(),startDate.getDate());
+
+    var pushMin = startDate.getMinutes();
+    pushMin = (pushMin == '0'? '59' : pushMin - '1');
+    console.log('pushMin: ' + pushMin);
+
+    switch(repeat) {
+
+        case 'once' :
+            return scheduledAt;
+        case 'daily' :
+            format = pushMin + ' ' + startDate.getHours() + ' ' + '* * *';
+            console.log(format);
+            return format;
+
+        case 'weekly' :
+            format = pushMin + ' ' + startDate.getHours() + ' ' + '* * ' + startDate.getDay();
+            console.log(format);
+            return format;
+
+        case 'monthly' :
+            format = pushMin + ' ' + startDate.getHours() + ' ' + startDate.getDate() + ' ' +  '* *';
+            console.log(format);
+            return format;
+
+        default :
+            return scheduledAt;
+    }
+});
+
+
 
 
 exports.addPlanJob = function(jobName, data) {
@@ -61,18 +96,13 @@ exports.addPlanJob = function(jobName, data) {
         var redis = require('redis');
         var client = redis.createClient(app.get('redis').port,app.get('redis').host);
 
-        var familyCallServerUrl = "http://" +  app.get('familyCallServer').host  + ":" + app.get('familyCallServer').port + "/FamilyCallCore/FamilyCallHttpServlet";
+        var familyCallServerUrl = app.get('familyCallServer').url  + "/FamilyCallCore/FamilyCallHttpServlet";
 
-        if(job.attrs.data.ment.file)
-          ment = 'ments/' + job.attrs.data.ment.container + '/' + job.attrs.data.ment.file;
+        if(job.attrs.data.ment.file) {
+            ment =  app.get('contentmanager').url +  '/ments/' + job.attrs.data.ment.container + '/' + job.attrs.data.ment.file;
+        }
 
         recordFilename = new Date().toISOString() + '.wav';
-
-        /*
-        _.each(job.attrs.data.__data.attendees, function(attendee){
-          attendee.planId = jobName;
-        });
-        */
 
         var options = {
             url: familyCallServerUrl,
@@ -123,6 +153,9 @@ exports.addPlanJob = function(jobName, data) {
 
                 options.body.accessNo = confId;
 
+				console.log('1.confId:' + confId);
+				console.log('2.confId:' + options.body.accessNo);
+
                 console.log('request :' + JSON.stringify(options));
                 rp.post(options)
                     .then(function(response){
@@ -136,12 +169,12 @@ exports.addPlanJob = function(jobName, data) {
 
                         _.each(attendees, function(attendee){
 
-                            if( job.attrs.data.repeat != 'now' && attendee.accept != 'no' && attendee.userId != null) {
+                            if( job.attrs.data.repeat != 'now' && attendee.role != 'owner' && attendee.accept != 'no' && attendee.userId != null) {
 
                                 var secondNoti = {
-                                    url: 'http://192.168.4.29:4004/notify/' + attendee.userId,
+                                    url: app.get('pushserver').url + '/notify/' + attendee.userId,
                                     json: true,
-                                    body: { type: 'conference', title: job.attrs.data.title, scheduledAt: calledAt, planId: attendee.planId }
+                                    body: { type: 'conference',title: job.attrs.data.title, scheduledAt: calledAt, planId: attendee.planId, conferenceNum: options.body.accessNo }
                                 }
 
                                 console.log('secondNoti:' + JSON.stringify(secondNoti));
@@ -174,108 +207,80 @@ exports.addPlanJob = function(jobName, data) {
 
         });
 
-      /*
-        client.on("error", function(err){
+        done();
 
-          // redis connection error. Update history.
-          console.log("Error" + err);
-
+        /*
+        client.quit(function(err,res){
+            console.log("Exiting from quit commaind");
         });
         */
 
-        /*
-        client.lpop('conferenceId', function(err,confId){
-          var calledAt = new Date();
-          var historyInfo = {
-            id : historyId,
-            planId: job.attrs.data.id,
-            pincode : confId,
-            plannerId: job.attrs.data.plannerId,
-            planInfo : {
-              'title': job.attrs.data.title,
-              'enabled': job.attrs.data.enabled,
-              'callType': job.attrs.data.callType,
-              'record': job.attrs.data.record,
-              'recordFilename' : recordFilename,
-              'ment': job.attrs.data.ment,
-              'calledAt' : calledAt,
-              'scheduledAt': job.attrs.data.scheduledAt,
-              'repeat': job.attrs.data.repeat,
-              'attendees': job.attrs.data.__data.attendees}
-          };
+    }); // agenda define
 
-          if(err) console.log(err);
+    agenda.define('send 1st push message', function(job,done){
 
+        var firstNoti = {
+            json: true,
+            body: { type: 'accept', repeat: job.attrs.data.repeat, title: data.__data.title, planId: jobName, scheduledAt: data.__data.scheduledAt }
+        }
 
-          options.accessNo = confId;
-          rp.post(options)
-            .then(function(response){
+        _.each(data.__data.attendees, function(attendee){
 
-              historyInfo.result = response.statusMessage;
+            if(attendee.role == 'owner')
+                firstNoti.body.host = attendee.name;
 
-              app.models.Plan.updateAll({id:jobName},{callState:'connected', "conferenceNum" : confId},function(err,info){
-                if(err) console.log(err);
-              });
-
-              _.each(job.attrs.data.__data.attendees, function(attendee){
-
-                var secondNoti = {
-                  url: 'http://192.168.4.29:4004/notify/' + attendee.userId,
-                  json: true,
-                  body: { title: job.attrs.data.title, scheduledAt: calledAt }
-                }
-
-                if(attendee.accept != 'no' && attendee.userId != null) {
-                  rp.post(secondNoti)
+            if(attendee.userId != null && attendee.role != 'owner') {
+                firstNoti.url = app.get('pushserver').url + '/notify/' + attendee.userId;
+                firstNoti.tel = attendee.tel;
+                console.log('First noti message: ' + JSON.stringify(firstNoti));
+                rp.post(firstNoti)
                     .then(function(response){
-                      console.log('Push Notification Success: ' + attendee.userId);
+                        console.log('First Push Notification Success: ' + attendee.userId);
                     })
                     .catch(console.error);
-                }
-              });
-            })
-            .catch(function(response){
-              historyInfo.result = response.cause.message;
-            })
-            .finally(function(){
-
-              console.log('Result of Conference Request: ' + historyInfo.result);
-
-              app.models.History.create(historyInfo,function(err,obj){
-                if(err) console.log(err);
-              });
-
-            }); // request
-
-        }); // lpop
-        */
+            }
+        });
 
         done();
 
-    }); // agenda define
+    });
+
+    agenda.define('send push secondNoti', function(job,done){
+
+    });
 
     var job = agenda.create(jobName,data);
     job.attrs.type = 'single';
 
     // run job for planId
     if(data.__data.repeat == 'now') {
-        job.schedule('now');
+        //job.schedule('now');
+        agenda.now(jobName,data);
     } else {
         if(data.__data.repeat == 'once') {
             job.schedule(this.planStartAt(data.__data.repeat,data.__data.scheduledAt));
+            //agenda.schedule(this.planStartAt(data.__data.repeat,data.__data.scheduledAt),jobName,data);
+            //agenda.schedule(this.planStartAt(data.__data.repeat,data.__data.scheduledAt),'send 1st push message',data);
+            //agenda.schedule('now','send 1st push message',data);
         } else {
-            job.repeatEvery(this.planStartAt(data.__data.repeat,data.__data.scheduledAt));
+            //job.repeatEvery(this.planStartAt(data.__data.repeat,data.__data.scheduledAt));
+            agenda.every(this.planStartAt(data.__data.repeat,data.__data.scheduledAt),jobName,data);
+            //agenda.every(this.planStartAt(data.__data.repeat,data.__data.scheduledAt),'send 1st push message',data);
+            //agenda.every(this.pushStartAt(data.__data.repeat,data.__data.scheduledAt),'send 1st push message',data);
         }
 
         var firstNoti = {
           json: true,
-          body: { type: 'accept', title: data.__data.title, planId: jobName, scheduledAt: data.__data.scheduledAt }
+          body: { type: 'accept', repeat: job.attrs.data.repeat, title: data.__data.title, planId: jobName, scheduledAt: data.__data.scheduledAt }
         }
 
       _.each(data.__data.attendees, function(attendee){
 
-        if(attendee.userId != null) {
-          firstNoti.url = 'http://192.168.4.29:4004/notify/' + attendee.userId;
+        if(attendee.role == 'owner')
+            firstNoti.body.host = attendee.name;
+
+        if(attendee.userId != null && attendee.role != 'owner') {
+          firstNoti.url = app.get('pushserver').url + '/notify/' + attendee.userId;
           firstNoti.tel = attendee.tel;
           console.log('First noti message: ' + JSON.stringify(firstNoti));
           rp.post(firstNoti)

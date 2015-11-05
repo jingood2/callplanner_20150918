@@ -4,7 +4,7 @@
   },
   "initial": {
     "compression": {},
-    "morgan": {"params": "combined"},
+    "morgan": {},
     "cors": {
       "params": {
         "origin": false,
@@ -24,9 +24,11 @@
   "routes": {
   },
   "files": {
-    "loopback#static": {
+    "loopback#static": [{
+			"name": "callplannerApp",
+			"paths": ["/callplannerApp"],
       "params": "$!../client/callplannerApp/www"
-    }
+			}]
   },
   "final": {
     "loopback#urlNotFound": {}

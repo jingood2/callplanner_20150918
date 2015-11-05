@@ -1,16 +1,6 @@
 var GLOBAL_CONFIG = require('../global-config');
 
-var isDevEnv = (process.env.NODE_ENV || 'production') === 'production';
-
 module.exports = {
-  host: '0.0.0.0',
-  port: 3000,
-  hostname: '0.0.0.0',
-  restApiRoot: GLOBAL_CONFIG.restApiRoot,
-  livereload: process.env.LIVE_RELOAD,
-  isDevEnv: isDevEnv,
-  legacyExplorer: GLOBAL_CONFIG.legacyExplorer,
-
   remoting: {
     errorHandler: { disalbeStackTrace: false },
     json: { strict: false, limit: '100kb'},
@@ -21,20 +11,20 @@ module.exports = {
   },
 
   conferenceNum: {
-    prefix: '0700000',
-    min: 0000,
-    max: 1111
+    prefix: '0707402',
+    min: 6100,
+    max: 6104
   },
 
   redis: {
-    host: 'localhost',
+    host: 'docker_redis_1',
     port: 6379,
     name: 'redis',
     connector: 'redis'
   },
 
   agendaDB: {
-      host: 'localhost',
+      host: 'docker_mongodb_1',
       port: 27017,
       connector: 'mongodb',
       user: 'callPlanner',
@@ -42,12 +32,17 @@ module.exports = {
   },
 
   familyCallServer: {
-    host: '221.146.204.182',
-    port: 9087
+    url: 'http://221.146.204.185:9090',
+    port: 9090
   },
 
   contentmanager: {
-    host: 'localhost',
-    port: 3003
+    url: 'http://221.146.204.186:3001',
+    port: 3001
+  },
+  pushserver: {
+    url: 'http://221.146.204.186:3002',
+    port: 3002
   }
+
 };

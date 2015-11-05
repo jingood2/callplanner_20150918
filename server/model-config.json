@@ -28,19 +28,19 @@
     "public": false
   },
   "Subscriber": {
-    "dataSource": "mongodb",
+    "dataSource": "db",
     "public": true
   },
   "Plan": {
-    "dataSource": "mongodb",
+    "dataSource": "db",
     "public": true
   },
   "Attendee": {
-    "dataSource": "mongodb",
+    "dataSource": "db",
     "public": true
   },
   "History": {
-    "dataSource": "mongodb",
+    "dataSource": "db",
     "public": true
   }
 }
