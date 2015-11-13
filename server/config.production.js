@@ -24,7 +24,7 @@ module.exports = {
   },
 
   agendaDB: {
-      host: 'docker_mongodb_1',
+      host: 'docker_db_1',
       port: 27017,
       connector: 'mongodb',
       user: 'callPlanner',
