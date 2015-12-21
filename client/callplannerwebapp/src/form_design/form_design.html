@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<!--[if IE 6]><html lang="ko" class="no-js old ie6"><![endif]-->
+<!--[if IE 7]><html lang="ko" class="no-js old ie7"><![endif]-->
+<!--[if IE 8]><html lang="ko" class="no-js old ie8"><![endif]-->
+<!--[if IE 9]><html lang="ko" class="no-js modern ie9"><![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--><html lang="ko" class="no-js modern"><!--<![endif]-->
+<head>
+<meta charset="utf-8" />
+<!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+
+<title>CSS3 Web Form Design - 웹 폼 디자인</title>
+
+<link rel="stylesheet" href="include/css/style.css" />
+<!--<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css" />-->
+<link href="http://api.mobilis.co.kr/webfonts/css/?fontface=NanumGothicWeb" rel="stylesheet" />
+<link href="http://fonts.googleapis.com/css?family=Sansita+One" rel="stylesheet" />
+
+<script src="include/js/libs/modernizr.min.js"></script>
+<script src="include/js/libs/jquery.min.js"></script>
+<script src="include/js/libs/jquery.json.js" type="text/javascript" ></script>
+<script src="include/js/libs/jquery.jsonrpcclient.js" type="text/javascript"></script>
+<script src="include/js/libs/jssip-0.7.4.min.js" type="text/javascript"></script>
+<script>JsSIP.debug.enable('JsSIP:*');</script>
+<!-- <script>JsSIP.rtcninja.debug.enable('rtcninja*');</script> -->
+<script src="include/js/script.js"></script>
+<script src="../confroom/include/js/jquery.confroom.js" type="text/javascript"></script>
+
+<!-- IE 호환성 처리 -->
+<!--[if lte IE 9]><meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<script src="include/js/libs/CFInstall.min.js"></script><script>window.attachEvent("onload",function(){CFInstall.check({mode:"overlay"})});</script><![endif]-->
+<!--[if IE 6]><script src="include/js/libs/DD_belatedPNG.min.js"></script><script>DD_belatedPNG.fix('input, .png_bg');</script><![endif]-->
+</head>
+<body>
+	<div id="reg">
+		<h2 title="JsSIP Test"> JsSIP 테스트 </h2>
+		<form id="reg-form" action="#" method="post">
+			<p>
+				<label for="u_name"> Display Name </label>
+				<input id="u_name" type="text" name="u_name" placeholder="Display Name" />
+			</p>
+			<p>
+				<label for="u_sipuri"> SIP URI </label>
+				<input id="u_sipuri" type="url" name="u_sipuri" placeholder="SIP URI" required />
+			</p>
+			<p>
+				<label for="u_pass"> Password </label>
+				<input id="u_pass" type="password" name="u_pass" placeholder="Password" required />
+			</p>
+			<p>
+				<label for="u_wsserver"> WS Server </label>
+				<input id="u_wsserver" type="url" name="u_wsserver" placeholder="WS Server" required />
+			</p>
+			<p id="accept">
+				<input id="accept_terms" type="checkbox" name="accept_terms" />
+				<label for="accept_terms">
+					<strong><a href="#" rel='external' target="_blank"> 컨퍼런스 PIN 번호</a></strong>를 전송합니다.
+				</label>
+			</p>
+			<p id="add_count">
+				<button id="reg_new" type="submit" title="Connect"> + </button>	
+			</p>
+			<p id="del_count">
+				<button id="reg_del" type="submit" title="End"> - </button>	
+			</p>			
+		</form>
+	</div> <!--e: #reg-->
+	
+	<div id="webcam">
+		<audio id="remoteView" autoplay hidden="true"></audio>
+		<audio id="selfView" autoplay hidden="true"></audio>
+	</div>
+
+</body>
+</html>

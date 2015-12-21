@@ -1,0 +1,131 @@
+// ------------------------------------------------------------
+// CSS3 Classes.less - CSS3 LESS Variables 2012 © yamoo9.com
+// ------------------------------------------------------------
+
+
+// ------------------------------------------------------------
+// CSS3 Classes.less - CSS3 LESS Functions 2012 © yamoo9.com
+// ------------------------------------------------------------
+
+// 둥근 테두리 
+.border-radius( @radius : 4px ) {
+	-webkit-border-radius: @radius;
+	-khtml-border-radius: @radius;
+	-moz-border-radius: @radius;
+	border-radius: @radius;
+}
+.outline-radius( @radius : 4px ) {
+	-webkit-outline-radius: @radius;
+	-khtml-outline-radius: @radius;
+	-moz-outline-radius: @radius;
+	outline-radius: @radius;
+}
+
+// 박스 그림자 
+.box-shadow( @param ) {
+	-webkit-box-shadow: @param;
+	-moz-box-shadow: @param;
+	box-shadow: @param;
+}
+
+// 그레디언트
+.linear-gradient( 
+	@begin: #423d37, 
+	@end: #1a1816,
+	@switch : 100%
+) {
+	background-color:  @begin;
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, @begin), color-stop(@switch, @end));
+	background-image: -webkit-linear-gradient(top, @begin, @end @switch);
+	background-image: -moz-linear-gradient(top, @begin, @end @switch);
+	background-image: -o-linear-gradient(top, @begin, @end @switch);
+	background-image: -ms-linear-gradient(top, @begin, @end @switch);
+	background-image: linear-gradient(top, @begin, @end @switch);
+}
+
+// 이중 선
+.double-borders( 
+	@colorOne : #25221f,
+	@colorTwo : #423d37,
+	@radius : 0
+) {
+	border: 1px solid @colorOne;
+	.box-shadow(0 0 0 1px @colorTwo);	
+	.border-radius( @radius );
+}
+
+// 트랜지션
+.transition( @param ) {
+  	-webkit-transition: @param;
+	-moz-transition: @param;
+	-o-transition: @param;
+	-ms-transition: @param;
+	transition: @param;
+}
+
+// 트랜스폼
+.transform( @params ) {
+	-webkit-transform: @params;
+	-moz-transform: @params;
+	-o-transform: @params;
+	-ms-transform: @params;
+	transform: @params;
+}
+
+// 박스
+.box(
+	@orient : horizontal,
+	@pack : center,
+	@align : center
+) {
+	display: -webkit-box;
+	   display: -moz-box;	
+	        display: box;
+
+	-webkit-box-orient: @orient;
+	   -moz-box-orient: @orient;
+	   		box-orient: @orient;
+	   		
+	-webkit-box-pack: @pack;
+	   -moz-box-pack: @pack;
+	        box-pack: @pack;		
+	        
+	-webkit-box-align: @align;
+	   -moz-box-align: @align;
+			box-align: @align;		
+}
+
+// 플렉스
+.flex( @val : 1 ) {
+	-webkit-box-flex: @val;
+	   -moz-box-flex: @val;
+	        box-flex: @val;
+}
+
+// 리사이즈
+.resize( @direction ) {
+	-webkit-resize: @direction;
+	   -moz-resize: @direction;
+	        resize: @direction;
+}
+
+// 멀티 컬럼
+.columns(
+	@count : 3,
+	@gap : 10
+) {
+	-webkit-column-count: @count;
+	   -moz-column-count: @count;
+	        column-count: @count;
+
+	-webkit-column-gap: @gap;
+	   -moz-column-gap: @gap;
+	        column-gap: @gap;
+}
+
+// 박스 사이징
+.box-sizing( @type : border-box ) {
+	-webkit-box-sizing: @type;
+	   -moz-box-sizing: @type;
+	        box-sizing: @type;		
+}

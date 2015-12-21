@@ -1,0 +1,9 @@
+/* simpleLESS 도구 사용시 유의할 점 - 2012©yamoo9.com */
+
+Mac 전용 도구인 LESS.app과 달리 Cross Platform 도구인 SimpleLESS의 경우,
+집필하던 현재 시점까지는 변환된 css 파일이 호출해야 할 파일이 같은 폴더 내에 없을
+경우 오류가 발생하는 문제를 가지고 있습니다.
+
+그런 이유로 css 폴더 내부에 있는 reset.css 파일이 less 폴더에도 있어야 합니다.
+Mac LESS.app의 경우는 그러한 문제가 발생하지 않기 때문에 LESS.app을 사용하실
+경우는 less 폴더 내부에 있는 css 파일을 제거하셔도 괜찮습니다.
